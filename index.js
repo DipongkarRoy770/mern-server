@@ -60,10 +60,25 @@ async function run() {
 
         app.post('/booking', async (req, res) => {
             const booking = req.body
-            console.log(booking)
+
             const result = await bookingColection.insertOne(booking)
             res.send(result)
         })
+        app.patch('/booking/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: new ObjectId(id) }
+            const updateBooking = req.body
+            console.log(updateBooking)
+            const updateDoc = {
+                $set: {
+                    plot: updateBooking.status
+                },
+            };
+            const result = await bookingColection.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+
+
         app.delete('/booking/:id', async (req, res) => {
             const id = req.params.id
             console.log(id)
